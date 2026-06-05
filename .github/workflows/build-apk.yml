@@ -1,0 +1,42 @@
+name: Build Android APK
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    name: Install and Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: pos-mobile-app/package-lock.json
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          eas-cache: true
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        working-directory: ./pos-mobile-app
+        run: npm install
+
+      - name: Build APK
+        working-directory: ./pos-mobile-app
+        run: eas build --platform android --profile preview --local --non-interactive --output=./app-release.apk
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: pos-mobile-app/app-release.apk
