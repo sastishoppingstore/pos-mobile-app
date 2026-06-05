@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import NetInfo from '@react-native-community/netinfo';
 
 // IMPORTANT: Replace with your actual cPanel domain
-export const API_URL = 'https://yourdomain.com/whatsapp/api_mobile.php';
+export const API_URL = 'https://fileen.store/company/api_mobile.php';
 
 const api = axios.create({
   baseURL: API_URL,
